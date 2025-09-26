@@ -1,102 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Playground</title>
-  <style>
-    body {
-      background-color: #212121;
-      color: white;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animated Playground</title>
+<style>
+  body {
+    background-color: #212121;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
 
-    /* Screen styles */
-    .screen {
-      text-align: center;
-    }
+  .screen {
+    display: none;
+    text-align: center;
+    padding: 100px 20px;
+    min-height: 100vh;
+  }
 
-    /* Animated toggle button styles */
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 34px;
-      margin-top: 20px;
-    }
+  /* Show Screen 1 by default */
+  #screen1 {
+    display: block;
+  }
 
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+  /* Animated Toggle Button */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin-top: 20px;
+  }
 
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #414141;
-      border-radius: 34px;
-      transition: background-color 0.4s;
-    }
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
 
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      border-radius: 50%;
-      transition: transform 0.4s;
-    }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #414141;
+    border-radius: 34px;
+    transition: background-color 0.4s;
+  }
 
-    .switch input:checked + .slider {
-      background-color: #0974f1;
-      box-shadow: 0 0 20px rgba(9, 117, 241, 0.8);
-    }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.4s;
+  }
 
-    .switch input:checked + .slider:before {
-      transform: translateX(26px);
-    }
+  .switch input:checked + .slider {
+    background-color: #0974f1;
+    box-shadow: 0 0 20px rgba(9, 117, 241, 0.8);
+  }
 
-    /* Screen 2 styling */
-    #screen2 {
-      display: none;
-      text-align: center;
-    }
+  .switch input:checked + .slider:before {
+    transform: translateX(26px);
+  }
 
-    #screen2 button {
-      padding: 10px 20px;
-      background-color: #1E90FF;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 20px;
-      font-size: 16px;
-    }
+  #screen2 button {
+    padding: 10px 20px;
+    background-color: #1E90FF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 16px;
+  }
 
-    #screen2 button:hover {
-      background-color: #63B3ED;
-    }
-  </style>
+  #screen2 button:hover {
+    background-color: #63B3ED;
+  }
+</style>
 </head>
 <body>
 
   <!-- Screen 1 -->
   <div id="screen1" class="screen">
-    <h1>Click the button to get started</h1>
-    <p>just click the damn button</p>
+    <h1>Welcome to My Playground!</h1>
+    <p>This is the first screen.</p>
     <label class="switch">
       <input type="checkbox" id="toggleButton">
       <span class="slider"></span>
@@ -105,34 +100,33 @@
 
   <!-- Screen 2 -->
   <div id="screen2" class="screen">
-    <h1>I am MrMausl and this is my website</h1>
-    <p>idk what to write here</p>
+    <h1>Screen 2</h1>
+    <p>Here’s some info on the second screen!</p>
     <button id="backButton">Go Back</button>
   </div>
 
-  <!-- JavaScript to switch screens -->
-  <script>
-    const toggleButton = document.getElementById('toggleButton');
-    const screen1 = document.getElementById('screen1');
-    const screen2 = document.getElementById('screen2');
-    const backButton = document.getElementById('backButton');
+<script>
+  const toggleButton = document.getElementById('toggleButton');
+  const screen1 = document.getElementById('screen1');
+  const screen2 = document.getElementById('screen2');
+  const backButton = document.getElementById('backButton');
 
-    toggleButton.addEventListener('change', () => {
-      if(toggleButton.checked) {
-        screen1.style.display = 'none';
-        screen2.style.display = 'block';
-      } else {
-        screen1.style.display = 'block';
-        screen2.style.display = 'none';
-      }
-    });
-
-    backButton.addEventListener('click', () => {
-      toggleButton.checked = false;
+  toggleButton.addEventListener('change', () => {
+    if(toggleButton.checked) {
+      screen1.style.display = 'none';
+      screen2.style.display = 'block';
+    } else {
       screen1.style.display = 'block';
       screen2.style.display = 'none';
-    });
-  </script>
+    }
+  });
+
+  backButton.addEventListener('click', () => {
+    toggleButton.checked = false;
+    screen1.style.display = 'block';
+    screen2.style.display = 'none';
+  });
+</script>
 
 </body>
 </html>
