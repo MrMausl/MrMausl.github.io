@@ -3,26 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clich here</title>
+    <title>My Playground</title>
     <style>
-        /* Existing styles... */
-
-        /* Toggle button styles */
         body {
             background-color: #212121;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
             display: flex;
-            height: 100vh;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            height: 100vh;
         }
 
+        /* Screen styles */
+        .screen {
+            text-align: center;
+        }
+
+        /* Web-Leb toggle button styles */
         .switch {
             font-size: 17px;
             position: relative;
             display: inline-block;
             width: 3.5em;
             height: 2em;
+            margin-top: 20px;
         }
 
         .switch input {
@@ -60,17 +66,71 @@
         .switch input:checked + .slider:before {
             transform: translateX(1.5em);
         }
+
+        /* Screen 2 styling */
+        #screen2 {
+            display: none;
+            text-align: center;
+        }
+
+        #screen2 button {
+            padding: 10px 20px;
+            background-color: #1E90FF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        #screen2 button:hover {
+            background-color: #63B3ED;
+        }
     </style>
 </head>
 <body>
-    <h1>Click here</h1>
 
-    <!-- Existing content... -->
+    <!-- Screen 1 -->
+    <div id="screen1" class="screen">
+        <h1>Welcome to My Playground!</h1>
+        <p>This is the first screen.</p>
+        <label class="switch">
+            <input type="checkbox" id="toggleButton">
+            <span class="slider"></span>
+        </label>
+    </div>
 
-    <!-- Toggle Button -->
-    <label class="switch">
-        <input type="checkbox">
-        <span class="slider"></span>
-    </label>
+    <!-- Screen 2 -->
+    <div id="screen2" class="screen">
+        <h1>Screen 2</h1>
+        <p>Here’s some info on the second screen!</p>
+        <button id="backButton">Go Back</button>
+    </div>
+
+    <!-- JavaScript to switch screens -->
+    <script>
+        const toggleButton = document.getElementById('toggleButton');
+        const screen1 = document.getElementById('screen1');
+        const screen2 = document.getElementById('screen2');
+        const backButton = document.getElementById('backButton');
+
+        toggleButton.addEventListener('change', () => {
+            if(toggleButton.checked) {
+                screen1.style.display = 'none';
+                screen2.style.display = 'block';
+            } else {
+                screen1.style.display = 'block';
+                screen2.style.display = 'none';
+            }
+        });
+
+        backButton.addEventListener('click', () => {
+            toggleButton.checked = false;
+            screen1.style.display = 'block';
+            screen2.style.display = 'none';
+        });
+    </script>
+
 </body>
 </html>
