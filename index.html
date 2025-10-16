@@ -1,41 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Video Links</title>
   <style>
     body {
-      background-color: #000;
+      background: #000;
       color: #fff;
-      font-family: "Courier New", Courier, monospace;
-      text-align: left;
+      font-family: "Courier New", monospace;
       padding: 10px;
-      line-height: 1.6;
+      line-height: 1.5;
     }
-    h1 {
-      font-weight: normal;
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-    a {
-      color: #1e90ff;
-      text-decoration: none;
-      display: block;
-      margin-bottom: 8px;
-    }
-    a:hover {
-      text-decoration: underline;
-      color: #66b2ff;
-    }
+    h1 { font-weight: normal; font-size: 24px; margin-bottom: 20px; }
+    a { color: #1e90ff; text-decoration: none; display: block; margin-bottom: 8px; }
+    a:hover { text-decoration: underline; color: #66b2ff; }
+    #login { margin-bottom: 20px; }
+    input { padding: 6px; margin-right: 6px; }
   </style>
-  <!-- Firebase SDKs -->
-  <script type="module">
-    // Import Firebase SDKs
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-    // 🔥 Replace with your own config from Firebase console
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } 
+      from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getFirestore, collection, getDocs } 
+      from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    // 🔥 Replace with your own config
     const firebaseConfig = {
       apiKey: "AIzaSyDhL5z0nP0rNdOViKMI9IF8yLwVQzerlo0",
       authDomain: "video-db-391d6.firebaseapp.com",
@@ -45,28 +36,54 @@
       appId: "1:106831261527:web:38f14f5f2d13cd1b0c9812"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
     const db = getFirestore(app);
 
+    const loginDiv = document.getElementById("login");
+    const linksDiv = document.getElementById("links");
+
     async function loadLinks() {
-      const querySnapshot = await getDocs(collection(db, "links"));
-      const container = document.getElementById("links");
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
+      const snapshot = await getDocs(collection(db, "links"));
+      linksDiv.innerHTML = "";
+      snapshot.forEach(doc => {
+        const d = doc.data();
         const link = document.createElement("a");
-        link.href = data.url;
-        link.textContent = data.title;
+        link.href = d.url;
+        link.textContent = d.title;
         link.target = "_blank";
-        container.appendChild(link);
+        linksDiv.appendChild(link);
       });
     }
 
-    window.addEventListener('DOMContentLoaded', loadLinks);
+    document.getElementById("loginBtn").addEventListener("click", () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      signInWithEmailAndPassword(auth, email, password)
+        .catch(err => alert("Login failed: " + err.message));
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loginDiv.style.display = "none";
+        linksDiv.textContent = "Loading...";
+        loadLinks();
+      } else {
+        loginDiv.style.display = "block";
+        linksDiv.innerHTML = "";
+      }
+    });
   </script>
 </head>
 <body>
-  <h1>My Video Links</h1>
-  <div id="links">Loading...</div>
+  <h1>Video Links</h1>
+
+  <div id="login">
+    <input id="email" type="email" placeholder="Email" />
+    <input id="password" type="password" placeholder="Password" />
+    <button id="loginBtn">Login</button>
+  </div>
+
+  <div id="links"></div>
 </body>
 </html>
