@@ -4,29 +4,80 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Video Links</title>
+
+  <!-- Google Sans Code Light 300 -->
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@300&display=swap" rel="stylesheet">
+
   <style>
     body {
       background: #000;
       color: #fff;
-      font-family: "Courier New", monospace;
-      padding: 10px;
-      line-height: 1.5;
+      font-family: "Google Sans Code", monospace;
+      font-weight: 300;
+      padding: 20px;
+      line-height: 1.6;
     }
-    h1 { font-weight: normal; font-size: 24px; margin-bottom: 20px; }
-    a { color: #1e90ff; text-decoration: none; display: block; margin-bottom: 8px; }
-    a:hover { text-decoration: underline; color: #66b2ff; }
-    #login { margin-bottom: 20px; }
-    input { padding: 6px; margin-right: 6px; }
+
+    h1 {
+      font-weight: 300;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    a {
+      color: #1e90ff;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #66b2ff;
+    }
+
+    #login {
+      margin-bottom: 20px;
+    }
+
+    input {
+      background: #111;
+      color: #fff;
+      border: 1px solid #333;
+      padding: 6px 10px;
+      margin-right: 6px;
+      font-family: inherit;
+      font-weight: 300;
+    }
+
+    button {
+      background: #1e90ff;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 300;
+    }
+
+    button:hover {
+      background: #66b2ff;
+    }
+
+    #logoutBtn {
+      margin-top: 20px;
+      display: none;
+    }
   </style>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } 
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } 
       from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
     import { getFirestore, collection, getDocs } 
       from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-    // 🔥 Replace with your own config
+    // 🔥 Replace this with your actual Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyDhL5z0nP0rNdOViKMI9IF8yLwVQzerlo0",
       authDomain: "video-db-391d6.firebaseapp.com",
@@ -42,6 +93,7 @@
 
     const loginDiv = document.getElementById("login");
     const linksDiv = document.getElementById("links");
+    const logoutBtn = document.getElementById("logoutBtn");
 
     async function loadLinks() {
       const snapshot = await getDocs(collection(db, "links"));
@@ -63,20 +115,27 @@
         .catch(err => alert("Login failed: " + err.message));
     });
 
+    logoutBtn.addEventListener("click", () => {
+      signOut(auth);
+    });
+
     onAuthStateChanged(auth, (user) => {
       if (user) {
         loginDiv.style.display = "none";
         linksDiv.textContent = "Loading...";
+        logoutBtn.style.display = "inline-block";
         loadLinks();
       } else {
         loginDiv.style.display = "block";
         linksDiv.innerHTML = "";
+        logoutBtn.style.display = "none";
       }
     });
   </script>
 </head>
+
 <body>
-  <h1>Video Links</h1>
+  <h1>Links: </h1>
 
   <div id="login">
     <input id="email" type="email" placeholder="Email" />
@@ -85,5 +144,6 @@
   </div>
 
   <div id="links"></div>
+  <button id="logoutBtn">Logout</button>
 </body>
 </html>
