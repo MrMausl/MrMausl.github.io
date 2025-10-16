@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Video Links</title>
+  <title>Video Links</title>
   <style>
     body {
       background-color: #000;
       color: #fff;
       font-family: "Courier New", Courier, monospace;
       text-align: left;
-      padding: 20px;
+      padding: 10px;
       line-height: 1.6;
     }
     h1 {
-      color: #fff;
       font-weight: normal;
       font-size: 24px;
       margin-bottom: 20px;
@@ -30,13 +29,44 @@
       color: #66b2ff;
     }
   </style>
+  <!-- Firebase SDKs -->
+  <script type="module">
+    // Import Firebase SDKs
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    // 🔥 Replace with your own config from Firebase console
+    const firebaseConfig = {
+      apiKey: "AIzaSyDhL5z0nP0rNdOViKMI9IF8yLwVQzerlo0",
+      authDomain: "video-db-391d6.firebaseapp.com",
+      projectId: "video-db-391d6",
+      storageBucket: "video-db-391d6.firebasestorage.app",
+      messagingSenderId: "106831261527",
+      appId: "1:106831261527:web:38f14f5f2d13cd1b0c9812"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadLinks() {
+      const querySnapshot = await getDocs(collection(db, "links"));
+      const container = document.getElementById("links");
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const link = document.createElement("a");
+        link.href = data.url;
+        link.textContent = data.title;
+        link.target = "_blank";
+        container.appendChild(link);
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', loadLinks);
+  </script>
 </head>
 <body>
   <h1>My Video Links</h1>
-
-  <a href="https://mega.nz/file/example1#key" target="_blank">Video 1</a>
-  <a href="https://mega.nz/file/example2#key" target="_blank">Video 2</a>
-  <a href="https://mega.nz/file/example3#key" target="_blank">Video 3</a>
-
+  <div id="links">Loading...</div>
 </body>
 </html>
